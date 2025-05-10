@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:17.4  # Используйте подходящую версию PostgreSQL
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-mydb}
+    ports:
+      - "5432:5432" # Пробрасываем порт дляжите путь к папке с вашим Django проектом
+      dockerfile: Dockerfile  # Укажите имя Dockerfile
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app  # Монтируем текущую папку проекта в контейнер
+    ports:
+      - "8000:8000" # Пробрасываем порт Django приложения
+    depends_on:
+      - db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
